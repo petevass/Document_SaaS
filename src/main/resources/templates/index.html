@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{layout::head('Home')}">
+
+</head>
+
+<body>
+
+<div th:replace="~{layout::appbar}"></div>
+
+<main style="font-family: 'Segoe UI', sans-serif; background-color: #eef2f7; padding: 40px 20px; min-height: calc(100vh - 60px); text-align: center;">
+
+    <h1 style="color: #1a202c; font-size: 32px; margin-bottom: 8px;">Document SaaS</h1>
+    <h3 style="color: #4a5568; font-size: 18px; font-weight: 500; margin-bottom: 40px;">The only cloud document storage and editor that you need.</h3>
+
+    <!--
+       CRITICAL FIX: Inline styles ensure your 3D card wrapper renders
+       perfectly even if your head tags are being overridden by layout dependencies.
+    -->
+    <style>
+        .isolated-wrapper {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            perspective: 1000px !important;
+            width: 100% !important;
+            margin-top: 20px;
+        }
+
+        .isolated-card {
+            background: #ffffff !important;
+            max-width: 350px !important;
+            width: 100% !important;
+            padding: 35px 24px !important;
+            border-radius: 24px !important;
+            text-align: center !important;
+            display: block !important;
+
+            /* Deep, highly visible 3D multi-layered ambient shadow */
+            box-shadow:
+                    0px 5px 15px rgba(0, 0, 0, 0.05),
+                    0px 15px 35px rgba(0, 0, 0, 0.1),
+                    0px 30px 60px rgba(0, 0, 0, 0.15) !important;
+
+            /* Forced physical 3D slant stance */
+            transform: rotateX(10deg) translateY(-10px) !important;
+            transform-style: preserve-3d !important;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease !important;
+        }
+
+        .isolated-card:hover {
+            /* Distinct floating elevation response */
+            transform: rotateX(0deg) translateY(-25px) scale(1.04) !important;
+            box-shadow:
+                    0px 15px 25px rgba(0, 0, 0, 0.05),
+                    0px 35px 55px rgba(0, 0, 0, 0.12),
+                    0px 70px 90px rgba(0, 0, 0, 0.22) !important;
+        }
+
+        .isolated-avatar {
+            width: 120px !important;
+            height: 120px !important;
+            margin: 0 auto 24px auto !important;
+            border-radius: 50% !important;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+            overflow: hidden !important;
+            background: #e2e8f0;
+        }
+
+        .isolated-img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border: 4px solid #ffffff !important;
+            border-radius: 50% !important;
+        }
+
+        .isolated-name {
+            font-size: 24px !important;
+            font-weight: 700 !important;
+            color: #1a202c !important;
+            margin-bottom: 6px !important;
+        }
+
+        .isolated-title {
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            color: #3182ce !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1.5px !important;
+            margin-bottom: 18px !important;
+        }
+
+        .isolated-bio {
+            font-size: 15px !important;
+            color: #718096 !important;
+            line-height: 1.6 !important;
+            margin-bottom: 28px !important;
+        }
+
+        .isolated-btn {
+            background-color: #3182ce !important;
+            color: #ffffff !important;
+            border: none !important;
+            font-size: 15px !important;
+            font-weight: 600 !important;
+            padding: 14px 28px !important;
+            border-radius: 12px !important;
+            cursor: pointer !important;
+            width: 100% !important;
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.4) !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .isolated-btn:hover {
+            background-color: #2b6cb0 !important;
+            box-shadow: 0 8px 20px rgba(49, 130, 206, 0.5) !important;
+            transform: translateY(-2px) !important;
+        }
+    </style>
+
+
+    <div class="isolated-wrapper">
+        <div class="isolated-card">
+
+
+            <h2 class="isolated-name">Completely Stored in the Cloud</h2>
+            <p class="isolated-title">Every Single Document you create and edit is stored in the cloud, taking</p>
+            <p class="isolated-bio">Open source solution to corporation-owned products.</p>
+
+
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <h3>All Completely Self-Hosted</h3>
+    <h4>Document SaaS offers an open source option to document creation and storage tools, all of which is self-hosted on a linux machine in the home of the SaaS's creator</h4>
+</main>
+
+</body>
+</html>

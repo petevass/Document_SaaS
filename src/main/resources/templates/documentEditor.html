@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:insert="~{layout::head('Home')}">
+
+</head>
+<style>
+
+    #container{
+        width:100%;
+        height:100%;
+        display:flex;
+        flex-direction:column;
+        align-items: center;
+
+    }
+    #editor-container{
+        width:100%;
+        height:100%;
+        display:flex;
+        flex-direction:column;
+        align-items: center;
+
+
+    }
+    textarea {
+        width: 75%;
+        min-height: 50px;
+        padding: 10px;
+        resize: none;
+        overflow-y: hidden;
+        box-sizing: border-box;
+    }
+    body{
+        width:100%;
+        height:100%;
+    }
+
+</style>
+
+<body>
+    <div th:replace="~{layout::appbar}"></div>
+
+    <div id="container">
+    <h3 id="title" th:class="${doc.getId()}" th:text="${doc.getTitle()}"></h3>
+<div style="width:100%; height:100%; " id="editor-container">
+    <textarea id="autogrow" th:class="${doc.getId()}" cols="100" rows="10" th:text="${doc.getBody()}">
+
+    </textarea>
+</div>
+    </div>
+</body>
+
+<script>
+    const textarea = document.getElementById('autogrow');
+
+    textarea.addEventListener('input', function () {
+
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+        let docId = this.className;
+        console.log(docId);
+        let currentBody = this.value;
+        sendNewBody(docId, currentBody);
+        console.log("body", currentBody);
+
+    });
+    function sendNewBody(id, body){
+        fetch(`/users/actions/edit_document/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCsrfToken() || ''
+            },
+            body: JSON.stringify({
+                docBody: body
+            })
+        }).then(res => {
+            if (res.ok) {
+                console.log(res.body);
+            } else {
+                alert("Failed to edit document.");
+            }
+        }).catch(err => {
+            console.error('Error edit document:', err);
+        });
+        console.log("typed");
+    }
+    function getCsrfToken() {
+        const match = document.cookie.match(/(^|;\s*)XSRF-TOKEN=([^;]*)/);
+        return match ? match[2] : null;
+    }
+
+    let docTitle = document.getElementById("title");
+    docTitle.addEventListener('click', (event)=>{
+
+        docTitle.contentEditable = true;
+
+    });
+    document.addEventListener('click', (event)=>{
+        if(!docTitle.contains(event.target) && !document.getElementById("editor-container").contains(event.target) ){
+            docTitle.contentEditable = false;
+            renameDocument(docTitle.textContent, docTitle.className);
+            console.log(docTitle.innerHTML);
+            console.log(docTitle.className);
+
+        }
+    });
+
+    function renameDocument(newTitle, docId) {
+
+        if (newTitle && newTitle.trim() !== "") {
+            fetch("/users/actions/rename_doc", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': getCsrfToken() || ''
+                },
+                body: JSON.stringify({ docId: docId, docTitle: newTitle.trim() })
+            }).then(res => {
+                if (res.ok) {
+                    window.location.reload();
+                } else {
+                    alert("Failed to rename document.");
+                }
+            }).catch(err => {
+                console.error('Error renaming document:', err);
+            });
+        }
+    }
+
+</script>
+</html>

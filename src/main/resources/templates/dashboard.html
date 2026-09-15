@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Dashboard')}"></head>
+<body>
+<nav th:replace="~{layout :: appbar}"></nav>
+
+<main>
+    <h1>Dashboard</h1>
+    <p>Welcome, <span th:text="${email}">user</span>.</p>
+
+    <p>Your roles:
+        <span sec:authentication="principal.authorities">[ROLE_USER]</span>
+    </p>
+
+    <div sec:authorize="hasRole('ADMIN')">
+        <p>You have admin access. <a th:href="@{/admin}">Open the console</a>.</p>
+    </div>
+</main>
+</body>
+</html>

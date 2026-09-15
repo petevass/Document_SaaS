@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">App</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, sans-serif;
+            color: #1a1a1a;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* ---- app bar ---- */
+
+        #app-bar {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 1rem;
+            background: dodgerblue;
+            padding: 0.75rem 1rem;
+        }
+
+        #app-bar nav {
+            margin-left: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        #homepage-title {
+            margin: 0;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .nav-button {
+            font: inherit;
+            font-size: 0.95rem;
+            color: #1a1a1a;
+            text-decoration: none;
+            background: white;
+            border: 1px solid white;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.1s ease,
+            background-color 0.1s ease, color 0.1s ease;
+        }
+
+        .nav-button:hover {
+            background-color: #0069d9;
+            border-color: #0069d9;
+            color: white;
+        }
+
+        .nav-button:active {
+            transform: scale(0.97) translateY(1px);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-button:focus-visible {
+            outline: 2px solid #003c7e;
+            outline-offset: 2px;
+        }
+
+        /* the logout form is only a wrapper — the button inside it is the control */
+        .nav-form {
+            margin: 0;
+            display: inline-flex;
+        }
+
+        /* ---- page content ---- */
+
+        main {
+            max-width: 42rem;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        main h1 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            display: block;
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.25rem;
+            font: inherit;
+            border: 1px solid #b9c0c8;
+            border-radius: 4px;
+        }
+
+        input[type="submit"],
+        main button {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            font: inherit;
+            cursor: pointer;
+            border: 1px solid dodgerblue;
+            border-radius: 4px;
+            background: dodgerblue;
+            color: white;
+        }
+
+        .error { color: #b00020; }
+        .notice { color: #05603a; }
+
+        @media (max-width: 600px) {
+            #app-bar {
+                flex-wrap: wrap;
+            }
+
+            #app-bar nav {
+                margin-left: 0;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .nav-button {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Reusable app bar. Pull it into a page with:
+     <div th:replace="~{layout :: appbar}"></div> -->
+<header th:fragment="appbar" id="app-bar">
+    <h2 id="homepage-title">Document SaaS</h2>
+
+    <nav>
+        <a th:href="@{/}" class="nav-button">Home</a>
+        <a th:href="@{/documents}" class="nav-button" sec:authorize="isAuthenticated()">Documents</a>
+        <a th:href="@{/dashboard}" class="nav-button" sec:authorize="isAuthenticated()">Account</a>
+        <form th:action="@{/logout}" method="post" class="nav-form" sec:authorize="isAuthenticated()">
+            <button type="submit" class="nav-button">Log out</button>
+        </form>
+        <a th:href="@{/login}" class="nav-button" sec:authorize="isAnonymous()">Log in</a>
+    </nav>
+</header>
+
+</body>
+</html>

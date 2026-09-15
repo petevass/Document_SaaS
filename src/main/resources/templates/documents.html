@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
+<head th:insert="~{layout::head('Home')}"></head>
+<style>
+    #document-display-grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto;
+        gap: 1.5rem;
+        padding: 1rem 0;
+    }
+    .document-card {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #1a202c;
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+    .document-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .custom-card {
+        background-color: #0076ff;
+        color: white;
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: inline-block;
+    }
+    .custom-card:hover {
+        background-color: #0056b3;
+    }
+    .card-actions {
+        display: flex;
+        gap: 1rem;
+    }
+    .delete-btn {
+        color: red;
+        text-decoration: underline;
+        cursor: pointer;
+        font-size: 0.9rem;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+    .rename-btn {
+        color: darkblue;
+        text-decoration: underline;
+        cursor: pointer;
+        font-size: 0.9rem;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+</style>
+<body>
+<div th:replace="~{layout::appbar}"></div>
+<div onclick="newDocument()" class="custom-card">Create new Document</div>
+<div id="document-display-grid">
+    <div onclick="editDoc(this)" th:each="doc, iterStat : ${documents}" th:id="${doc.getId()}" class="document-card">
+        <span th:text="${doc.getTitle()}"></span>
+        <div class="card-actions">
+            <button class="delete-btn" th:data-id="${doc.getId()}" onclick="event.stopPropagation(); deleteDocument(this)">Delete</button>
+            <button class="rename-btn" th:data-id="${doc.getId()}" onclick="event.stopPropagation(); renameDocument(this)">Rename</button>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function getCsrfToken() {
+        const match = document.cookie.match(/(^|;\s*)XSRF-TOKEN=([^;]*)/);
+        return match ? match[2] : null;
+    }
+    function newDocument() {
+        fetch('/users/actions/new_document', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': getCsrfToken() || ''
+            }
+        }).then(res => {
+            if (res.ok) {
+                window.location.reload();
+            }
+        }).catch(err => {
+            console.error('Error creating document:', err);
+        });
+    }
+
+    function deleteDocument(btn) {
+        const docId = btn.getAttribute('data-id');
+        if (confirm("Are you sure you want to delete this document?")) {
+            fetch("/users/actions/delete_doc", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': getCsrfToken() || ''
+                },
+                body: JSON.stringify({ docId: docId })
+            }).then(res => {
+                if (res.ok) {
+                    window.location.reload();
+                } else {
+                    alert("Failed to delete document.");
+                }
+            }).catch(err => {
+                console.error('Error deleting document:', err);
+            });
+        }
+    }
+
+    function renameDocument(btn) {
+        const docId = btn.getAttribute('data-id');
+        const newTitle = prompt("Enter a new title:");
+        if (newTitle && newTitle.trim() !== "") {
+            fetch("/users/actions/rename_doc", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': getCsrfToken() || ''
+                },
+                body: JSON.stringify({ docId: docId, docTitle: newTitle.trim() })
+            }).then(res => {
+                if (res.ok) {
+                    window.location.reload();
+                } else {
+                    alert("Failed to rename document.");
+                }
+            }).catch(err => {
+                console.error('Error renaming document:', err);
+            });
+        }
+    }
+
+    function editDoc(div){
+        window.location.href="/document_editor/"+div.id;
+    }
+</script>
+</html>
