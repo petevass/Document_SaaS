@@ -6,7 +6,7 @@ A perfect open source replacement to all coorporation owned cloud document stora
 <img width="1908" height="946" alt="image" src="https://github.com/user-attachments/assets/ef5d42e9-3006-4d4b-8979-0953924d4f67" />
 
 
-Demo Link: [Click Here](https://jarvis-ubuntu.tail5b0cb9.ts.net/documents)
+Demo Link: [Click Here](https://jarvis-ubuntu.tail5b0cb9.ts.net/)
 
 Get Started:
 - Click demo link
