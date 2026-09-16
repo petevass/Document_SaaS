@@ -1,0 +1,27 @@
+{
+  "name": "newgoogldocs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "npx @tailwindcss/cli -i ./src/main/resources/tailwind-input.css -o src/main/resources/static/css/app.css",
+    "watch:css": "npx @tailwindcss/cli -i ./src/main/resources/tailwind-input.css -o src/main/resources/static/css/app.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/petevass/Document_SaaS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/petevass/Document_SaaS/issues"
+  },
+  "homepage": "https://github.com/petevass/Document_SaaS#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}
