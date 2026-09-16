@@ -40,7 +40,7 @@
 </style>
 
 <body>
-    <div th:replace="~{layout::appbar}"></div>
+    <div id="app-bar" th:replace="~{layout::appbar}"></div>
 
     <div id="container">
     <h3 id="title" th:class="${doc.getId()}" th:text="${doc.getTitle()}"></h3>
@@ -99,7 +99,7 @@
 
     });
     document.addEventListener('click', (event)=>{
-        if(!docTitle.contains(event.target) && !document.getElementById("editor-container").contains(event.target) ){
+        if(!docTitle.contains(event.target) && !document.getElementById("editor-container").contains(event.target) && !document.getElementById("app-bar").contains(event.target)){
             docTitle.contentEditable = false;
             renameDocument(docTitle.textContent, docTitle.className);
             console.log(docTitle.innerHTML);
